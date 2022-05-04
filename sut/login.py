@@ -26,11 +26,11 @@ class UserDataBase(object):
                     users[user.username] = user
         return users
 
-    def create_user(self, username, password):
+    def create_user(self, username, password, email):
         try:
-            user = User(username, password)
+            user = User(username, password, email)
         except ValueError as err:
-            return 'Creating user failed: %s' % err
+            return 'Creating user failed again: %s' % err
         self.users[user.username] = user
         return 'SUCCESS'
 
@@ -57,8 +57,8 @@ class UserDataBase(object):
     def save(self):
         with open(self.db_file, 'w') as file:
             for user in self.users.values():
-                file.write('%s\t%s\t%s\n'
-                           % (user.username, user.password, user.status))
+                file.write('%s\t%s\t%s\t%s\n'
+                           % (user.username, user.password, user.email, user.status))
 
     def __enter__(self):
         return self
@@ -69,11 +69,12 @@ class UserDataBase(object):
 
 class User(object):
 
-    def __init__(self, username, password, status='Inactive'):
+    def __init__(self, username, password, email, status='Inactive'):
         self.username = username
         self.password = password
+        self.email = email
         self.status = status
-
+    
     @property
     def password(self):
         return self._password
@@ -82,6 +83,19 @@ class User(object):
     def password(self, password):
         self._validate_password(password)
         self._password = password
+
+    @property
+    def email(self):
+        return self._email
+
+    @email.setter
+    def email(self, email):
+        self._validate_email(email)
+        self._email = email        
+
+    def _validate_email(self, email):
+        if not(14 <= len(email) <= 25):
+            raise ValueError('Email incorrect')                
 
     def _validate_password(self, password):
         if not (7 <= len(password) <= 12):
@@ -103,16 +117,14 @@ class User(object):
                 return False
         return has_lower and has_upper and has_number
 
-
 def login(username, password):
     with UserDataBase() as db:
         print(db.login(username, password))
 
 
-def create_user(username, password):
+def create_user(username, password, email):
     with UserDataBase() as db:
-        print(db.create_user(username, password))
-
+        print(db.create_user(username, password, email))
 
 def change_password(username, old_pwd, new_pwd):
     with UserDataBase() as db:

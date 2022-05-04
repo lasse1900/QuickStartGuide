@@ -10,8 +10,8 @@ class LoginLibrary(object):
                                       '..', 'sut', 'login.py')
         self._status = ''
 
-    def create_user(self, username, password):
-        self._run_command('create', username, password)
+    def create_user(self, username, password, email):
+        self._run_command('create', username, password, email)
 
     def change_password(self, username, old_pwd, new_pwd):
         self._run_command('change-password', username, old_pwd, new_pwd)

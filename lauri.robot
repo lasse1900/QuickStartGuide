@@ -5,8 +5,10 @@ Library    lib/LoginLibrary.py
 *** Variables ***
 ${USERNAME}               janedoe
 ${PASSWORD}               J4n3D0e
+${EMAIL}                  lasse@post.com
 ${NEW PASSWORD}           e0D3n4J
 ${DATABASE FILE}          ${TEMPDIR}${/}robotframework-quickstart-db.txt
+${EMAIL}                  Email must be between 14 -25 chars long @TODO
 ${PWD INVALID LENGTH}     Password must be 7-12 characters long
 ${PWD INVALID CONTENT}    Password must be a combination of lowercase and uppercase letters and numbers
 
@@ -14,19 +16,19 @@ ${PWD INVALID CONTENT}    Password must be a combination of lowercase and upperc
 *** Test Cases ***
 User status is stored in database
     [Tags]    variables    database
-    Create Valid User    ${USERNAME}    ${PASSWORD}
-    Database Should Contain    ${USERNAME}    ${PASSWORD}    Inactive
+    Create Valid User    ${USERNAME}    ${PASSWORD}    ${EMAIL}
+    Database Should Contain    ${USERNAME}    ${PASSWORD}    ${EMAIL}    Inactive
     Login    ${USERNAME}    ${PASSWORD}
-    Database Should Contain    ${USERNAME}    ${PASSWORD}    Active
+    Database Should Contain    ${USERNAME}    ${PASSWORD}    ${EMAIL}    Active
 
 
 User can create an account and log in
-    Create Valid User    fred    P4ssw0rd
+    Create Valid User    fred    P4ssw0rd    lasse@post.com
     Attempt to Login with Credentials    fred    P4ssw0rd
     Status Should Be    Logged In
 
 User cannot log in with bad password
-    Create Valid User    betty    P4ssw0rd
+    Create Valid User    betty    P4ssw0rd    liisa@post.com
     Attempt to Login with Credentials    betty    wrong
     Status Should Be    Access Denied
 
@@ -50,8 +52,8 @@ Clear login database
     Remove file    ${DATABASE FILE}
 
 Create valid user
-    [Arguments]    ${username}    ${password}
-    Create user    ${username}    ${password}
+    [Arguments]    ${username}    ${password}    ${email}
+    Create user    ${username}    ${password}    ${email}
     Status should be    SUCCESS
 
 Creating user with invalid password should fail
@@ -65,12 +67,12 @@ Login
     Status should be    Logged In
 
 Database Should Contain
-    [Arguments]    ${username}    ${password}    ${status}
+    [Arguments]    ${username}    ${password}    ${email}    ${status}
     ${database} =     Get File    ${DATABASE FILE}
-    Should Contain    ${database}    ${username}\t${password}\t${status}\n
+    Should Contain    ${database}    ${username}\t${password}\t${email}\t${status}\n
 
 A user has a valid account
-    Create valid user    ${USERNAME}    ${PASSWORD}
+    Create valid user    ${USERNAME}    ${PASSWORD}    ${EMAIL}
 
 She changes her password
     Change password    ${USERNAME}    ${PASSWORD}    ${NEW PASSWORD}
