@@ -5,6 +5,10 @@ from __future__ import print_function
 import os.path
 import sys
 import tempfile
+import re
+
+regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+
 
 
 DATABASE_FILE = os.path.join(tempfile.gettempdir(),
@@ -94,8 +98,8 @@ class User(object):
         self._email = email        
 
     def _validate_email(self, email):
-        if not(14 <= len(email) <= 25):
-            raise ValueError('Email incorrect')                
+        if not re.fullmatch(regex, email):
+            raise ValueError('Email incorrect')         
 
     def _validate_password(self, password):
         if not (7 <= len(password) <= 12):
