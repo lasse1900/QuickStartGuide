@@ -47,15 +47,8 @@ Invalid password
     AbCdEfGh         ${PWD INVALID CONTENT}
     abCD56+          ${PWD INVALID CONTENT}
 
-String printing
-    Print string    ${SOMETEXT}
-
 *** Keywords ***
 
-Print string
-    Print hello    ${SOMETEXT}
-    Status should be    RobotFramework
-    
 Clear login database
     Remove file    ${DATABASE FILE}
 
