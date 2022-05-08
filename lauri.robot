@@ -11,7 +11,7 @@ ${DATABASE FILE}          ${TEMPDIR}${/}robotframework-quickstart-db.txt
 ${EMAIL}                  Email must be between 14 -25 chars long @TODO
 ${PWD INVALID LENGTH}     Password must be 7-12 characters long
 ${PWD INVALID CONTENT}    Password must be a combination of lowercase and uppercase letters and numbers
-
+${SOMETEXT}               RobotFramework
 
 *** Test Cases ***
 User status is stored in database
@@ -47,7 +47,15 @@ Invalid password
     AbCdEfGh         ${PWD INVALID CONTENT}
     abCD56+          ${PWD INVALID CONTENT}
 
+String printing
+    Print string    ${SOMETEXT}
+
 *** Keywords ***
+
+Print string
+    Print hello    ${SOMETEXT}
+    Status should be    RobotFramework
+    
 Clear login database
     Remove file    ${DATABASE FILE}
 

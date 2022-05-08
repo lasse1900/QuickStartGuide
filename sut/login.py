@@ -54,6 +54,12 @@ class UserDataBase(object):
         else:
             return 'SUCCESS'
 
+    def print_hello(self, sometext):
+        if sometext == 'RobotFramework':
+            return 'SUCCESS'
+        else:
+            return 'error'
+
     def save(self):
         with open(self.db_file, 'w') as file:
             for user in self.users.values():
@@ -129,7 +135,6 @@ def create_user(username, password, email):
 def change_password(username, old_pwd, new_pwd):
     with UserDataBase() as db:
         print(db.change_password(username, old_pwd, new_pwd))
-
 
 def help():
     print('Usage: %s { create | login | change-password | help }'

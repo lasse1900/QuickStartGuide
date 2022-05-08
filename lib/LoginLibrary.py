@@ -29,3 +29,6 @@ class LoginLibrary(object):
         process = subprocess.Popen(command, universal_newlines=True, stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
         self._status = process.communicate()[0].strip()
+
+    def print_hello(self, sometext):
+        self._run_command(sometext)
