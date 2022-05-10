@@ -8,7 +8,7 @@ ${PASSWORD}               J4n3D0e
 ${EMAIL}                  lasse@post.com
 ${NEW PASSWORD}           e0D3n4J
 ${DATABASE FILE}          ${TEMPDIR}${/}robotframework-quickstart-db.txt
-${EMAIL}                  Email must be between 14 -25 chars long @TODO
+${EMAIL}                  Email validation done with regex
 ${PWD INVALID LENGTH}     Password must be 7-12 characters long
 ${PWD INVALID CONTENT}    Password must be a combination of lowercase and uppercase letters and numbers
 ${SOMETEXT}               RobotFramework
@@ -40,12 +40,13 @@ User can change password
 
 Invalid password
     [Template]    Creating user with invalid password should fail
-    abCD5            ${PWD INVALID LENGTH}
-    abCD567890123    ${PWD INVALID LENGTH}
-    123DEFG          ${PWD INVALID CONTENT}
-    abcd56789        ${PWD INVALID CONTENT}
-    AbCdEfGh         ${PWD INVALID CONTENT}
-    abCD56+          ${PWD INVALID CONTENT}
+    abCD5            ${PWD INVALID LENGTH}    ${email}
+    abCD567890123    ${PWD INVALID LENGTH}    ${email}
+    123DEFG          ${PWD INVALID CONTENT}    ${email}
+    abcd56789        ${PWD INVALID CONTENT}    ${email}
+    AbCdEfGh         ${PWD INVALID CONTENT}    ${email}
+    abCD56+          ${PWD INVALID CONTENT}    ${email}
+
 
 *** Keywords ***
 
@@ -58,9 +59,9 @@ Create valid user
     Status should be    SUCCESS
 
 Creating user with invalid password should fail
-    [Arguments]    ${password}    ${error}
-    Create user    example    ${password}
-    Status should be    Creating user failed: ${error}
+   [Arguments]    ${password}    ${error}    ${email}
+   Create user    example    ${password}    ${email}
+   Status should be    ${error}
 
 Login
     [Arguments]    ${username}    ${password}

@@ -10,10 +10,8 @@ import re
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
 
-
 DATABASE_FILE = os.path.join(tempfile.gettempdir(),
                              'robotframework-quickstart-db.txt')
-
 
 class UserDataBase(object):
 
@@ -34,7 +32,7 @@ class UserDataBase(object):
         try:
             user = User(username, password, email)
         except ValueError as err:
-            return 'Creating user failed again: %s' % err
+            return err
         self.users[user.username] = user
         return 'SUCCESS'
 
